@@ -229,11 +229,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/kaimov/RiderProjects/NoCap/NoCap.WebApi/NoCap.WebApi.csproj",
+      "projectUniqueName": "/Users/kaimov/RiderProjects/NoCapd/NoCap.WebApi/NoCap.WebApi.csproj",
       "projectName": "NoCap.WebApi",
-      "projectPath": "/Users/kaimov/RiderProjects/NoCap/NoCap.WebApi/NoCap.WebApi.csproj",
+      "projectPath": "/Users/kaimov/RiderProjects/NoCapd/NoCap.WebApi/NoCap.WebApi.csproj",
       "packagesPath": "/Users/kaimov/.nuget/packages/",
-      "outputPath": "/Users/kaimov/RiderProjects/NoCap/NoCap.WebApi/obj/",
+      "outputPath": "/Users/kaimov/RiderProjects/NoCapd/NoCap.WebApi/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/kaimov/.nuget/NuGet/NuGet.Config"

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "paqoAdWXqUp4FsjjQy2W8XBVNBrcEPfkIllpc3X50I01QDytYfzMzzO+AVTfRu6cdClFX97Tqr0NM4Q+zQhZyA==",
+  "dgSpecHash": "SOr0BV24y7b9t5Y4U1j1zxYy+5JV4apRCXNCA1F2cS4bBMmAUFpNFwWY8GchwfBfttnc6kbGYWuhfSG/v/Sqog==",
   "success": true,
-  "projectFilePath": "/Users/kaimov/RiderProjects/NoCap/NoCap.WebApi/NoCap.WebApi.csproj",
+  "projectFilePath": "/Users/kaimov/RiderProjects/NoCapd/NoCap.WebApi/NoCap.WebApi.csproj",
   "expectedPackageFiles": [
     "/Users/kaimov/.nuget/packages/microsoft.extensions.apidescription.server/3.0.0/microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "/Users/kaimov/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
