@@ -146,17 +146,16 @@ namespace NoCap.Managers
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
             {
-                // Возвращаем ошибку, если пользователь не найден или его email не подтвержден
                 throw new InvalidOperationException("Невозможно отправить письмо для сброса пароля.");
             }
 
-            // Генерируем токен для сброса пароля
+            
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            // Формируем ссылку для сброса пароля
+            
             var resetPasswordUrl = "https://example.com/reset-password?token=" + HttpUtility.UrlEncode(token) + "&email=" + HttpUtility.UrlEncode(email);
 
-            // Отправляем письмо на адрес электронной почты пользователя с ссылкой для сброса пароля
+            
             var emailRequest = new EmailRequest
             {
                 RecipientEmail = email,
@@ -164,17 +163,6 @@ namespace NoCap.Managers
                 Body = $"Для сброса пароля перейдите по ссылке: {resetPasswordUrl}"
             };
             await _emailService.SendEmailAsync(emailRequest, _config);
-        }
-
-
-        public async Task<string> GeneratePasswordResetTokenAsync(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-
-            if (user == null)
-                throw new DException.DException("User not found");
-
-            return await _userManager.GeneratePasswordResetTokenAsync(user);
         }
     }
 }

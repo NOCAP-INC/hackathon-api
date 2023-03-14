@@ -4,10 +4,10 @@ namespace NoCap.Data.Repository
 {
     public class Repository<T> where T : class
     {
-        private readonly IdentityDbContext _dbContext;
+        private readonly IdentityContext _dbContext;
         private readonly DbSet<T> _dbSet;
 
-        public Repository(IdentityDbContext dbContext, DbSet<T> dbSet)
+        public Repository(IdentityContext dbContext, DbSet<T> dbSet)
         {
             _dbContext = dbContext;
             _dbSet = dbSet;

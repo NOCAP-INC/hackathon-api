@@ -6,6 +6,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 using NoCap.Configs;
+using NoCap.Data;
 using NoCap.Handlers;
 using NoCap.Managers;
 using NoCap.Service;
@@ -15,11 +16,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<Config>(provider => BindConfiguration(provider));
 
-builder.Services.AddDbContext<IdentityDbContext>();
+builder.Services.AddDbContext<IdentityContext>();
 
 builder.Services.AddDefaultIdentity<User>()
-    .AddEntityFrameworkStores<IdentityDbContext>();
-builder.Services.Configure<SMTPConfig>(builder.Configuration.GetSection(nameof(SMTPConfig)));
+    .AddEntityFrameworkStores<IdentityContext>();
+
 builder.Services.AddSingleton<SMTPConfig>();
 
 builder.Services.AddTransient<CheckCodeHandler>();

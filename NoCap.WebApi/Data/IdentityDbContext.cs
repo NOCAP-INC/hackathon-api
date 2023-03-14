@@ -4,9 +4,9 @@ using NoCap.Managers;
 
 namespace NoCap.Data;
 
-public class IdentityDbContext : IdentityDbContext<User>
+public class IdentityContext : IdentityDbContext<User>
 {
-    public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
+    public IdentityContext(DbContextOptions<IdentityContext> options)
         : base(options)
     {
 
