@@ -11,11 +11,13 @@ public class EmailController : ControllerBase
 {
     private readonly EmailService _emailService;
     private readonly SMTPConfig _config;
+    private readonly IMediator _mediator;
 
-    public EmailController(EmailService emailService, Config config)
+    public EmailController(EmailService emailService, Config config, IMediator mediator)
     {
         _emailService = emailService;
         _config = config.SMTPConfig;
+        _mediator = mediator;
     }
 
     [HttpPost("send")]

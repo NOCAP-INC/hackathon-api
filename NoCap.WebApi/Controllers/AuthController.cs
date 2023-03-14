@@ -31,25 +31,11 @@ namespace NoCap.Controllers
         {
             await _mediator.Send(request);
         }
-
-        [HttpGet("googleLogin")]
-        public IActionResult GoogleLogin()
-        {
-            return _authManager.GoogleLogin();
-        }
-
-        [HttpPost("googleResponse")]
-        public async Task GoogleResponse()
-        {
-            await _authManager.GoogleResponse();
-        }
-        
-        
+    
         [HttpPost("forgot-password")]
-        public async Task<ActionResult> ForgotPassword(string email)
+        public async Task ForgotPassword(string email)
         {
             await _authManager.SendPasswordResetEmailAsync(email);
-            return Ok();
         }
 
         [HttpPost("reset-password")]
