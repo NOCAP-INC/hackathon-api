@@ -13,10 +13,11 @@ namespace NoCap.Controllers
     {
         private readonly IMediator _mediator;
         private readonly AuthManager _authManager;
+
         public AuthController(IMediator mediator, AuthManager authManager)
         {
             _mediator = mediator;
-            _authManager= authManager;
+            _authManager = authManager;
         }
 
         [HttpPost("register")]
@@ -42,5 +43,30 @@ namespace NoCap.Controllers
         {
             await _authManager.GoogleResponse();
         }
+        
+        
+        [HttpPost("forgot-password")]
+        public async Task<ActionResult> ForgotPassword(string email)
+        {
+            await _authManager.SendPasswordResetEmailAsync(email);
+            return Ok();
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<ActionResult<ResetPasswordResult>> ResetPassword(ResetPasswordRequest request)
+        {
+            var result = await _mediator.Send(request);
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+
+        }
+        
+        
     }
 }

@@ -1,7 +1,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Memory;
+using NoCap.Configs;
+using NoCap.Helpers;
 using NoCap.Managers;
 using NoCap.Request;
+using NoCap.Service;
 
 namespace NoCap.Handlers
 
@@ -10,26 +14,44 @@ namespace NoCap.Handlers
     {
         private readonly UserManager<User> _userManager;
         private readonly IUserStore<User> _userStore;
+        private readonly IMemoryCache _memoryCache;
         private readonly IUserEmailStore<User> _emailStore;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<AuthManager> _logger;
+        private readonly EmailService _emailService;
+        private readonly SMTPConfig _config;
 
         public RegisterUserHandler(
             UserManager<User> userManager,
             IUserStore<User> userStore,
             SignInManager<User> signInManager,
-            ILogger<AuthManager> logger)
+            ILogger<AuthManager> logger,
+            EmailService emailService,
+            Config config,
+            IMemoryCache memoryCache)
         {
             _userManager = userManager;
+            _memoryCache = memoryCache;
             _userStore = userStore;
             _emailStore = (IUserEmailStore<User>)_userStore;
             _signInManager = signInManager;
             _logger = logger;
+            _config = config.SMTPConfig;
+            _emailService = emailService;
         }
         public async Task<RegisterResult> Handle(RegisterUserRequest request,
             CancellationToken cancellationToken)
         {
             var user = new User();
+            int code = CodeHelper.GetRandomCode(7);
+            var emailRequest = new EmailRequest()
+            {
+                Body = $"{code}",
+                Subject = $"Ваш код верификации",
+                RecipientEmail = $"{request.Email}",        
+            };
+            await _emailService.SendEmailAsync(emailRequest, _config);
+            _memoryCache.Set(request.Email, code, DateTimeOffset.Now.AddMinutes(15));
             SetUserProperties(user, request.FullName, request.Email);
 
             await _userStore.SetUserNameAsync(user, request.Email, CancellationToken.None);

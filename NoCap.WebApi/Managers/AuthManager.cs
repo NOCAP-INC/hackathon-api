@@ -1,7 +1,10 @@
 using System.Security.Claims;
+using System.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NoCap.Configs;
 using NoCap.Request;
+using NoCap.Service;
 
 namespace NoCap.Managers
 
@@ -13,18 +16,24 @@ namespace NoCap.Managers
         private readonly IUserEmailStore<User> _emailStore;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<AuthManager> _logger;
+        private readonly EmailService _emailService; // added dependency
+        private readonly SMTPConfig _config; // added dependency
 
         public AuthManager(
             UserManager<User> userManager,
             IUserStore<User> userStore,
             SignInManager<User> signInManager,
-            ILogger<AuthManager> logger)
+            ILogger<AuthManager> logger,
+            EmailService emailService, // added dependency
+            SMTPConfig config) // added dependency
         {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = (IUserEmailStore<User>)_userStore;
             _signInManager = signInManager;
             _logger = logger;
+            _emailService = emailService; // added dependency
+            _config = config; // added dependency
         }
         public async Task Register(RegisterUserRequest request)
         {
@@ -130,6 +139,42 @@ namespace NoCap.Managers
         {
             var properties = _signInManager.ConfigureExternalAuthenticationProperties("Google", "Auth/googleResponse");
             return new ChallengeResult("Google", properties);
+        }
+        
+        public async Task SendPasswordResetEmailAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+            {
+                // Возвращаем ошибку, если пользователь не найден или его email не подтвержден
+                throw new InvalidOperationException("Невозможно отправить письмо для сброса пароля.");
+            }
+
+            // Генерируем токен для сброса пароля
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            // Формируем ссылку для сброса пароля
+            var resetPasswordUrl = "https://example.com/reset-password?token=" + HttpUtility.UrlEncode(token) + "&email=" + HttpUtility.UrlEncode(email);
+
+            // Отправляем письмо на адрес электронной почты пользователя с ссылкой для сброса пароля
+            var emailRequest = new EmailRequest
+            {
+                RecipientEmail = email,
+                Subject = "Сброс пароля",
+                Body = $"Для сброса пароля перейдите по ссылке: {resetPasswordUrl}"
+            };
+            await _emailService.SendEmailAsync(emailRequest, _config);
+        }
+
+
+        public async Task<string> GeneratePasswordResetTokenAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+                throw new DException.DException("User not found");
+
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
         }
     }
 }

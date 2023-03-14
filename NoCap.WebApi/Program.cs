@@ -1,8 +1,10 @@
+using System.Configuration;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 using NoCap.Configs;
 using NoCap.Handlers;
 using NoCap.Managers;
@@ -10,13 +12,17 @@ using NoCap.Service;
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<Config>(provider => BindConfiguration(provider));
 
 builder.Services.AddDbContext<IdentityDbContext>();
 
 builder.Services.AddDefaultIdentity<User>()
     .AddEntityFrameworkStores<IdentityDbContext>();
+builder.Services.Configure<SMTPConfig>(builder.Configuration.GetSection(nameof(SMTPConfig)));
+builder.Services.AddSingleton<SMTPConfig>();
 
+builder.Services.AddTransient<CheckCodeHandler>();
 builder.Services.AddTransient<EmailService>();
 
 builder.Services.AddControllers();

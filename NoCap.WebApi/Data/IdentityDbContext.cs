@@ -9,9 +9,9 @@ public class IdentityDbContext : IdentityDbContext<User>
     public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
         : base(options)
     {
-        
-    }
 
+    }
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
@@ -25,10 +25,5 @@ public class IdentityDbContext : IdentityDbContext<User>
                                    "Connection string 'IdentityDbContextConnection' not found.");
 
         optionsBuilder.UseNpgsql(connectionString);
-    }
-
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        base.OnModelCreating(builder);
     }
 }

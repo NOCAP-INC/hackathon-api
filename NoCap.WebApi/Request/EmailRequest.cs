@@ -1,9 +1,10 @@
+using MediatR;
 using Microsoft.Build.Framework;
 
 namespace NoCap.Request
 
 {
-    public class EmailRequest
+    public class EmailRequest : IRequest
     {
         [Required]
         public string RecipientEmail { get; set; }
