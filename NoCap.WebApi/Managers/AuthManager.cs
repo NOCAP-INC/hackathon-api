@@ -67,6 +67,10 @@ namespace NoCap.Managers
 
         }
 
+        public async Task<User> FindByEmailAsync(string email)
+        {
+            return await _userManager.FindByEmailAsync(email);
+        }
 
         public async Task Login(LoginUserRequest request)
         {
@@ -90,6 +94,8 @@ namespace NoCap.Managers
             else
                 throw new DException.DException("Login Error");
         }
+        
+        
 
         public async Task GoogleResponse()
         {
@@ -141,28 +147,6 @@ namespace NoCap.Managers
             return new ChallengeResult("Google", properties);
         }
         
-        public async Task SendPasswordResetEmailAsync(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-            {
-                throw new InvalidOperationException("Невозможно отправить письмо для сброса пароля.");
-            }
-
-            
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-            
-            var resetPasswordUrl = "https://example.com/reset-password?token=" + HttpUtility.UrlEncode(token) + "&email=" + HttpUtility.UrlEncode(email);
-
-            
-            var emailRequest = new EmailRequest
-            {
-                RecipientEmail = email,
-                Subject = "Сброс пароля",
-                Body = $"Для сброса пароля перейдите по ссылке: {resetPasswordUrl}"
-            };
-            await _emailService.SendEmailAsync(emailRequest, _config);
-        }
+        
     }
 }

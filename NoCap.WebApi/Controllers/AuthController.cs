@@ -31,27 +31,7 @@ namespace NoCap.Controllers
         {
             await _mediator.Send(request);
         }
-    
-        [HttpPost("forgot-password")]
-        public async Task ForgotPassword(string email)
-        {
-            await _authManager.SendPasswordResetEmailAsync(email);
-        }
-
-        [HttpPost("reset-password")]
-        public async Task<ActionResult<ResetPasswordResult>> ResetPassword(ResetPasswordRequest request)
-        {
-            var result = await _mediator.Send(request);
-            if (result.Succeeded)
-            {
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest(result);
-            }
-
-        }
+        
         
         
     }

@@ -1,6 +1,8 @@
+using MediatR;
+
 namespace NoCap.Request;
 
-public class PasswordResetRequest
+public class ForgotPasswordRequest : IRequest<Unit>
 {
     public string Email { get; set; }
 }
