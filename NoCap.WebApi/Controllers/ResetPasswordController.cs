@@ -18,9 +18,9 @@ namespace NoCap.Controllers
         }
 
         [HttpPost("send-code")]
-        public async Task<IActionResult> SendResetPasswordCode([FromBody] EmailRequest emailRequest)
+        public async Task<IActionResult> SendResetPasswordCode([FromBody] EmailResetPasswordRequest emailRequest)
         {
-            var result = await _userService.SendResetPasswordCodeAsync(emailRequest.RecipientEmail);
+            var result = await _userService.SendResetPasswordCodeAsync(emailRequest.Email);
 
             if (result)
             {
@@ -34,6 +34,19 @@ namespace NoCap.Controllers
         public async Task<IActionResult> VerifyResetPasswordCode([FromBody] ResetPasswordCodeRequest resetPasswordCodeRequest)
         {
             var result = await _userService.VerifyResetPasswordCodeAsync(resetPasswordCodeRequest.Email, resetPasswordCodeRequest.Code);
+
+            if (result)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+        
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest resetPasswordRequest)
+        {
+            var result = await _userService.ResetPasswordAsync(resetPasswordRequest.Email, resetPasswordRequest.NewPassword);
 
             if (result)
             {

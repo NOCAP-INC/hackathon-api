@@ -25,7 +25,7 @@ builder.Services.AddSingleton<SMTPConfig>();
 
 builder.Services.AddTransient<CheckCodeHandler>();
 builder.Services.AddTransient<EmailService>();
-
+builder.Services.AddTransient<UserService>();
 builder.Services.AddControllers();
 builder.Services.AddTransient<RegisterUserHandler>();
 

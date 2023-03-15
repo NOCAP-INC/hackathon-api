@@ -53,6 +53,7 @@ public class UserService
         return true;
     }
 
+
     public async Task<bool> VerifyResetPasswordCodeAsync(string email, int code)
     {
         if (!_memoryCache.TryGetValue(email, out int cachedCode))
@@ -67,5 +68,28 @@ public class UserService
 
         return true;
     }
+    
+    public async Task<bool> ResetPasswordAsync(string email, string newPassword)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+        {
+            return false;
+        }
 
+        var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var decodedCode = WebEncoders.Base64UrlDecode(code);
+        var token = Encoding.UTF8.GetString(decodedCode);
+        var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+
+        if (result.Succeeded)
+        {
+            _memoryCache.Remove(email);
+            return true;
+        }
+
+        return false;
+    }
 }
+
+
