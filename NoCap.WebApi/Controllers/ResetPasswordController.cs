@@ -1,8 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using NoCap.Managers;
+using NoCap.Handlers;
 using NoCap.Request;
-using NoCap.Service;
+
 
 namespace NoCap.Controllers
 {
@@ -10,17 +10,18 @@ namespace NoCap.Controllers
     [Route("api/[controller]")]
     public class ResetPasswordController : ControllerBase
     {
-        private readonly UserService _userService;
+        private readonly IMediator _mediator;
 
-        public ResetPasswordController(UserService userService)
+        public ResetPasswordController(IMediator mediator)
         {
-            _userService = userService;
+            _mediator = mediator;
         }
 
         [HttpPost("send-code")]
         public async Task<IActionResult> SendResetPasswordCode([FromBody] EmailResetPasswordRequest emailRequest)
         {
-            var result = await _userService.SendResetPasswordCodeAsync(emailRequest.Email);
+            var command = new SendResetPasswordCodeCommand { Email = emailRequest.Email };
+            var result = await _mediator.Send(command);
 
             if (result)
             {
@@ -31,9 +32,12 @@ namespace NoCap.Controllers
         }
 
         [HttpPost("verify-code")]
-        public async Task<IActionResult> VerifyResetPasswordCode([FromBody] ResetPasswordCodeRequest resetPasswordCodeRequest)
+        public async Task<IActionResult> VerifyResetPasswordCode(
+            [FromBody] ResetPasswordCodeRequest resetPasswordCodeRequest)
         {
-            var result = await _userService.VerifyResetPasswordCodeAsync(resetPasswordCodeRequest.Email, resetPasswordCodeRequest.Code);
+            var query = new VerifyResetPasswordCodeQuery
+                { Email = resetPasswordCodeRequest.Email, Code = resetPasswordCodeRequest.Code };
+            var result = await _mediator.Send(query);
 
             if (result)
             {
@@ -42,12 +46,13 @@ namespace NoCap.Controllers
 
             return BadRequest();
         }
-        
+
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest resetPasswordRequest)
         {
-            var result = await _userService.ResetPasswordAsync(resetPasswordRequest.Email, resetPasswordRequest.NewPassword);
-
+            var command = new ResetPasswordCommand
+                { Email = resetPasswordRequest.Email, NewPassword = resetPasswordRequest.NewPassword };
+            var result = await _mediator.Send(command);
             if (result)
             {
                 return Ok();
@@ -56,5 +61,7 @@ namespace NoCap.Controllers
             return BadRequest();
         }
     }
+
+
 
 }
