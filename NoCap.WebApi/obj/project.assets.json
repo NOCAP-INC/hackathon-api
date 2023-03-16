@@ -310,6 +310,26 @@
           }
         }
       },
+      "Microsoft.AspNetCore.Cors/2.2.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Http.Extensions": "2.2.0",
+          "Microsoft.Extensions.Configuration.Abstractions": "2.2.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "2.2.0",
+          "Microsoft.Extensions.Logging.Abstractions": "2.2.0",
+          "Microsoft.Extensions.Options": "2.2.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.AspNetCore.Cors.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.AspNetCore.Cors.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.AspNetCore.Cryptography.Internal/6.0.14": {
         "type": "package",
         "compile": {
@@ -5694,6 +5714,19 @@
         "lib/netstandard2.0/Microsoft.AspNetCore.Connections.Abstractions.xml",
         "microsoft.aspnetcore.connections.abstractions.2.2.0.nupkg.sha512",
         "microsoft.aspnetcore.connections.abstractions.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.Cors/2.2.0": {
+      "sha512": "LFlTM3ThS3ZCILuKnjy8HyK9/IlDh3opogdbCVx6tMGyDzTQBgMPXLjGDLtMk5QmLDCcP3l1TO3z/+1viA8GUg==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.cors/2.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Microsoft.AspNetCore.Cors.dll",
+        "lib/netstandard2.0/Microsoft.AspNetCore.Cors.xml",
+        "microsoft.aspnetcore.cors.2.2.0.nupkg.sha512",
+        "microsoft.aspnetcore.cors.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Cryptography.Internal/6.0.14": {
@@ -14380,6 +14413,7 @@
       "MediatR >= 11.1.0",
       "MediatR.Extensions.Microsoft.DependencyInjection >= 11.1.0",
       "Microsoft.AspNetCore.Authentication.Google >= 6.0.0",
+      "Microsoft.AspNetCore.Cors >= 2.2.0",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 6.0.14",
       "Microsoft.AspNetCore.Identity.UI >= 6.0.14",
       "Microsoft.EntityFrameworkCore >= 6.0.14",
@@ -14392,32 +14426,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\asaka\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "/Users/kaimov/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\asaka\\OneDrive\\Рабочий стол\\123\\hackathon-api\\NoCap.WebApi\\NoCap.WebApi.csproj",
+      "projectUniqueName": "/Users/kaimov/RiderProjects/hackathon/NoCap.WebApi/NoCap.WebApi.csproj",
       "projectName": "NoCap.WebApi",
-      "projectPath": "C:\\Users\\asaka\\OneDrive\\Рабочий стол\\123\\hackathon-api\\NoCap.WebApi\\NoCap.WebApi.csproj",
-      "packagesPath": "C:\\Users\\asaka\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\asaka\\OneDrive\\Рабочий стол\\123\\hackathon-api\\NoCap.WebApi\\obj\\",
+      "projectPath": "/Users/kaimov/RiderProjects/hackathon/NoCap.WebApi/NoCap.WebApi.csproj",
+      "packagesPath": "/Users/kaimov/.nuget/packages/",
+      "outputPath": "/Users/kaimov/RiderProjects/hackathon/NoCap.WebApi/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\asaka\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/kaimov/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
+        "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -14459,6 +14486,10 @@
           "Microsoft.AspNetCore.Authentication.Google": {
             "target": "Package",
             "version": "[6.0.0, )"
+          },
+          "Microsoft.AspNetCore.Cors": {
+            "target": "Package",
+            "version": "[2.2.0, )"
           },
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
             "target": "Package",
@@ -14520,7 +14551,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.407\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.406/RuntimeIdentifierGraph.json"
       }
     }
   }
