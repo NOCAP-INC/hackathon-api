@@ -12,7 +12,7 @@ public class IdentityContext : IdentityDbContext<User>
     {
 
     }
-    
+    public DbSet<Report> Reports { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
@@ -26,5 +26,14 @@ public class IdentityContext : IdentityDbContext<User>
                                    "Connection string 'IdentityDbContextConnection' not found.");
 
         optionsBuilder.UseSqlServer(connectionString);
+    }
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.Entity<User>()
+            .HasMany(u => u.Reports)
+            .WithOne(r => r.User)
+            .HasForeignKey(r => r.UserId);
     }
 }

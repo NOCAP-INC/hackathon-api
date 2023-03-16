@@ -20,6 +20,7 @@ builder.Services.AddSingleton<SMTPConfig>();
 
 builder.Services.AddTransient<EmailService>();
 builder.Services.AddTransient<UserService>();
+builder.Services.AddTransient<ReportService>();
 builder.Services.AddControllers();
 builder.Services.AddTransient<RegisterUserHandler>();
 
@@ -30,11 +31,11 @@ builder.Services.AddAuthorization();
 builder.Services.AddIdentity<User, IdentityRole>()
         .AddEntityFrameworkStores<IdentityContext>();
 
-using (var scope = builder.Services.BuildServiceProvider().CreateScope())
-{
-    var serviceProvider = scope.ServiceProvider;
-    Seed(serviceProvider).Wait();
-}
+//using (var scope = builder.Services.BuildServiceProvider().CreateScope())
+//{
+//    var serviceProvider = scope.ServiceProvider;
+//    Seed(serviceProvider);
+//}
 
 var mediatr = new ServiceCollection();
 builder.Services.AddMediatR(typeof(Program).Assembly);
