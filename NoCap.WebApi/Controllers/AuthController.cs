@@ -18,18 +18,25 @@ namespace NoCap.Controllers
         }
 
         [HttpPost("register")]
-        public async Task Register(RegisterUserRequest request)
+        public async Task<IActionResult> Register(RegisterUserRequest request)
         {
-            await _mediator.Send(request);
+            var result = await _mediator.Send(request);
+            if (result.Success)
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
 
         [HttpPost("login")]
-        public async Task Login(LoginUserRequest request)
+        public async Task<IActionResult> Login(LoginUserRequest request)
         {
-            await _mediator.Send(request);
+            var result = await _mediator.Send(request);
+            if (result.Success)
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
-        
-        
-        
     }
 }
