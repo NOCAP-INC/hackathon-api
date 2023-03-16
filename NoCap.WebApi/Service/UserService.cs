@@ -76,10 +76,7 @@ public class UserService
         {
             return false;
         }
-
-        var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-        var decodedCode = WebEncoders.Base64UrlDecode(code);
-        var token = Encoding.UTF8.GetString(decodedCode);
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
 
         if (result.Succeeded)
