@@ -4,7 +4,7 @@ using Microsoft.Build.Framework;
 namespace NoCap.Request
 
 {
-    public class EmailRequest : IRequest
+    public class EmailRequest : IRequest<bool>
     {
         [Required]
         public string RecipientEmail { get; set; }

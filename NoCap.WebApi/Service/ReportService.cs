@@ -18,16 +18,16 @@ namespace NoCap.Service
 
         public async Task<IEnumerable<Report>> GetAllReportsAsync()
         {
-            return await _dbContext.Reports.Include(r => r.User).ToListAsync();
-        }
-        public async Task<Report> GetReportByIdAsync(int id)
-        {
-            return await _dbContext.Reports.Include(r => r.User).FirstOrDefaultAsync(r => r.Id == id);
+            var reports = _dbContext.Reports.Include(r => r.User).ToList();
+            return reports;
         }
 
         public async Task AddReportAsync(Report report)
         {
             await _dbContext.Reports.AddAsync(report);
+            var user = await _userManager.FindByIdAsync(report.UserId);
+            var userReport = new UserReport { User = user, Report = report, ReportId = report.Id, UserId = user.Id };
+            await _dbContext.UserReports.AddAsync(userReport);
             await _dbContext.SaveChangesAsync();
         }
 
@@ -51,12 +51,16 @@ namespace NoCap.Service
             var user = await _userManager.FindByEmailAsync(email);
             if (user != null)
             {
-                var reports = await _dbContext.Reports
-                    .Where(r => r.UserId == user.Id)
-                    .ToListAsync();
-                return reports;
+                var userId = user.Id;
+                var userReports = _dbContext.UserReports
+                    .Where(ur => ur.UserId == userId)
+                    .Include(ur => ur.Report)
+                    .ThenInclude(r => r.User)
+                    .ToList();
+                return userReports.Select(ur => ur.Report);
             }
-            return Enumerable.Empty<Report>();
+            return null;
+            
         }
     }
 }

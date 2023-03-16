@@ -10,6 +10,6 @@ namespace NoCap.Managers
         public DateTime CreatedAt { get; set; }
         public bool IsResolved { get; set; }
         public string UserId { get; set; }
-        public User User { get; set; }
+        public User User { get; set; }  
     }
 }
