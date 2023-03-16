@@ -6,6 +6,7 @@ namespace NoCap.Managers
     {
 
         public string FullName { get; set; }
+        public string RoleId { get; set; }
 
     }
 }

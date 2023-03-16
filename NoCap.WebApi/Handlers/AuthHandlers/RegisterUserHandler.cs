@@ -53,6 +53,7 @@ namespace NoCap.Handlers
             {
                 _logger.LogInformation("User created a new account with password.");
                 await _signInManager.SignInAsync(user, isPersistent: false);
+                await _userManager.AddToRoleAsync(user, "User");
                 return new RegisterResult { Success = true };
             }
 

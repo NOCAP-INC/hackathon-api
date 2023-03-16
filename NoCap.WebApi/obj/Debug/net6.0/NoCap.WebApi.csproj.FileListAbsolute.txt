@@ -856,3 +856,13 @@ C:\Users\asaka\OneDrive\Рабочий стол\123\hackathon-api\NoCap.WebApi\o
 C:\Users\asaka\OneDrive\Рабочий стол\123\hackathon-api\NoCap.WebApi\obj\Debug\net6.0\NoCap.WebApi.pdb
 C:\Users\asaka\OneDrive\Рабочий стол\123\hackathon-api\NoCap.WebApi\obj\Debug\net6.0\NoCap.WebApi.genruntimeconfig.cache
 C:\Users\asaka\OneDrive\Рабочий стол\123\hackathon-api\NoCap.WebApi\obj\Debug\net6.0\ref\NoCap.WebApi.dll
+C:\Users\asaka\OneDrive\Рабочий стол\123\hackathon-api\NoCap.WebApi\bin\Debug\net6.0\DnsClient.dll
+C:\Users\asaka\OneDrive\Рабочий стол\123\hackathon-api\NoCap.WebApi\bin\Debug\net6.0\ExtentReports.dll
+C:\Users\asaka\OneDrive\Рабочий стол\123\hackathon-api\NoCap.WebApi\bin\Debug\net6.0\Microsoft.AspNetCore.Server.Kestrel.Https.dll
+C:\Users\asaka\OneDrive\Рабочий стол\123\hackathon-api\NoCap.WebApi\bin\Debug\net6.0\Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll
+C:\Users\asaka\OneDrive\Рабочий стол\123\hackathon-api\NoCap.WebApi\bin\Debug\net6.0\MongoDB.Bson.dll
+C:\Users\asaka\OneDrive\Рабочий стол\123\hackathon-api\NoCap.WebApi\bin\Debug\net6.0\MongoDB.Driver.dll
+C:\Users\asaka\OneDrive\Рабочий стол\123\hackathon-api\NoCap.WebApi\bin\Debug\net6.0\MongoDB.Driver.Core.dll
+C:\Users\asaka\OneDrive\Рабочий стол\123\hackathon-api\NoCap.WebApi\bin\Debug\net6.0\MongoDB.Libmongocrypt.dll
+C:\Users\asaka\OneDrive\Рабочий стол\123\hackathon-api\NoCap.WebApi\bin\Debug\net6.0\RazorEngine.NetCore.dll
+C:\Users\asaka\OneDrive\Рабочий стол\123\hackathon-api\NoCap.WebApi\bin\Debug\net6.0\SharpCompress.dll

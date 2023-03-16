@@ -17,8 +17,7 @@ builder.Services.AddSingleton<Config>(provider => BindConfiguration(provider));
 
 builder.Services.AddDbContext<IdentityContext>();
 
-builder.Services.AddDefaultIdentity<User>()
-    .AddEntityFrameworkStores<IdentityContext>();
+
 
 builder.Services.AddSingleton<SMTPConfig>();
 
@@ -31,6 +30,15 @@ builder.Services.AddTransient<LoginUserHandler>();
 builder.Services.AddMediatR(typeof(Program).Assembly);
 builder.Services.AddMediatR(typeof(EmailHandler).Assembly);
 builder.Services.AddAuthorization();
+builder.Services.AddIdentity<User, IdentityRole>()
+        .AddEntityFrameworkStores<IdentityContext>()
+        .AddDefaultTokenProviders();
+
+using (var scope = builder.Services.BuildServiceProvider().CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    Seed(serviceProvider).Wait();
+}
 
 var mediatr = new ServiceCollection();
 builder.Services.AddMediatR(typeof(Program).Assembly);
@@ -82,19 +90,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-void Configure(IApplicationBuilder app, RoleManager<IdentityRole> roleManager)
-{
-    var adminRole = new IdentityRole("Admin");
-    var userRole = new IdentityRole("User");
-    if (!roleManager.RoleExistsAsync(adminRole.Name).Result)
-    {
-        var result = roleManager.CreateAsync(adminRole);
-    }
-    if (!roleManager.RoleExistsAsync(userRole.Name).Result)
-    {
-        var result = roleManager.CreateAsync(userRole);
-    }
-}
+
 Config? BindConfiguration(IServiceProvider provider)
 {
     var envName = builder.Environment.EnvironmentName;
@@ -106,3 +102,17 @@ Config? BindConfiguration(IServiceProvider provider)
     var configService = config.Get<Config>();
     return configService;
 }
+ static async Task Seed(IServiceProvider serviceProvider)
+{
+    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    if (!await roleManager.RoleExistsAsync("Admin"))
+    {
+        await roleManager.CreateAsync(new IdentityRole("Admin"));
+    }
+    if (!await roleManager.RoleExistsAsync("User"))
+    {
+        await roleManager.CreateAsync(new IdentityRole("User"));
+    }
+}
+
