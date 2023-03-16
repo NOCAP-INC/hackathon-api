@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-
 using NoCap.Configs;
 using NoCap.Data;
 using NoCap.Handlers;
@@ -83,7 +82,19 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
+void Configure(IApplicationBuilder app, RoleManager<IdentityRole> roleManager)
+{
+    var adminRole = new IdentityRole("Admin");
+    var userRole = new IdentityRole("User");
+    if (!roleManager.RoleExistsAsync(adminRole.Name).Result)
+    {
+        var result = roleManager.CreateAsync(adminRole);
+    }
+    if (!roleManager.RoleExistsAsync(userRole.Name).Result)
+    {
+        var result = roleManager.CreateAsync(userRole);
+    }
+}
 Config? BindConfiguration(IServiceProvider provider)
 {
     var envName = builder.Environment.EnvironmentName;
