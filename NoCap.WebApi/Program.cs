@@ -16,9 +16,6 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<Config>(provider => BindConfiguration(provider));
 
 builder.Services.AddDbContext<IdentityContext>();
-
-
-
 builder.Services.AddSingleton<SMTPConfig>();
 
 builder.Services.AddTransient<EmailService>();
@@ -31,8 +28,7 @@ builder.Services.AddMediatR(typeof(Program).Assembly);
 builder.Services.AddMediatR(typeof(EmailHandler).Assembly);
 builder.Services.AddAuthorization();
 builder.Services.AddIdentity<User, IdentityRole>()
-        .AddEntityFrameworkStores<IdentityContext>()
-        .AddDefaultTokenProviders();
+        .AddEntityFrameworkStores<IdentityContext>();
 
 using (var scope = builder.Services.BuildServiceProvider().CreateScope())
 {

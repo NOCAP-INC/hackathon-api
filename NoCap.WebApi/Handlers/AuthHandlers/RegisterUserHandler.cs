@@ -44,16 +44,15 @@ namespace NoCap.Handlers
         {
             var user = new User();
             SetUserProperties(user, request.FullName, request.Email);
-
+            user.Role = "User";
             await _userStore.SetUserNameAsync(user, request.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, request.Email, CancellationToken.None);
             var result = await _userManager.CreateAsync(user, request.Password);
 
             if (result.Succeeded)
             {
-                _logger.LogInformation("User created a new account with password.");
-                await _signInManager.SignInAsync(user, isPersistent: false);
                 await _userManager.AddToRoleAsync(user, "User");
+                await _signInManager.SignInAsync(user, isPersistent: false);
                 return new RegisterResult { Success = true };
             }
 
