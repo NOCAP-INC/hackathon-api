@@ -23,24 +23,14 @@ builder.Services.AddDefaultIdentity<User>()
 
 builder.Services.AddSingleton<SMTPConfig>();
 
-builder.Services.AddTransient<CheckCodeHandler>();
 builder.Services.AddTransient<EmailService>();
 builder.Services.AddTransient<UserService>();
 builder.Services.AddControllers();
 builder.Services.AddTransient<RegisterUserHandler>();
 
-builder.Services.AddTransient<AuthManager>();
 builder.Services.AddTransient<LoginUserHandler>();
 builder.Services.AddMediatR(typeof(Program).Assembly);
 builder.Services.AddMediatR(typeof(EmailHandler).Assembly);
-
-builder.Services.AddAuthentication()
-    .AddGoogle(options =>
-    {
-        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-        options.SignInScheme = IdentityConstants.ExternalScheme;
-    });
 builder.Services.AddAuthorization();
 
 var mediatr = new ServiceCollection();

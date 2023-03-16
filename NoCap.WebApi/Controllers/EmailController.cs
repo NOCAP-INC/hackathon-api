@@ -21,9 +21,9 @@ public class EmailController : ControllerBase
     }
 
     [HttpPost("send")]
-    public async Task<IActionResult> SendEmailAsync([FromBody] EmailRequest emailRequest, [FromServices] IMediator mediator)
+    public async Task<IActionResult> SendEmailAsync([FromBody] EmailRequest emailRequest)
     {
-        await mediator.Send(new SendEmailCommand(emailRequest));
+        await _mediator.Send(new SendEmailCommand(emailRequest));
         return Ok();
     }
 }

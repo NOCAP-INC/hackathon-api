@@ -12,13 +12,13 @@ namespace NoCap.Handlers
         private readonly IUserStore<User> _userStore;
         private readonly IUserEmailStore<User> _emailStore;
         private readonly SignInManager<User> _signInManager;
-        private readonly ILogger<AuthManager> _logger;
+        private readonly ILogger<LoginUserHandler> _logger;
 
         public LoginUserHandler(
             UserManager<User> userManager,
             IUserStore<User> userStore,
             SignInManager<User> signInManager,
-            ILogger<AuthManager> logger)
+            ILogger<LoginUserHandler> logger)
         {
             _userManager = userManager;
             _userStore = userStore;

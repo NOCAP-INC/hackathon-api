@@ -17,16 +17,16 @@ namespace NoCap.Handlers
         private readonly IMemoryCache _memoryCache;
         private readonly IUserEmailStore<User> _emailStore;
         private readonly SignInManager<User> _signInManager;
-        private readonly ILogger<AuthManager> _logger;
         private readonly EmailService _emailService;
         private readonly SMTPConfig _config;
+        private readonly ILogger<RegisterUserHandler> _logger;
 
         public RegisterUserHandler(
             UserManager<User> userManager,
             IUserStore<User> userStore,
             SignInManager<User> signInManager,
-            ILogger<AuthManager> logger,
             EmailService emailService,
+            ILogger<RegisterUserHandler> logger,
             Config config,
             IMemoryCache memoryCache)
         {
@@ -35,23 +35,14 @@ namespace NoCap.Handlers
             _userStore = userStore;
             _emailStore = (IUserEmailStore<User>)_userStore;
             _signInManager = signInManager;
-            _logger = logger;
             _config = config.SMTPConfig;
+            _logger = logger;
             _emailService = emailService;
         }
         public async Task<RegisterResult> Handle(RegisterUserRequest request,
             CancellationToken cancellationToken)
         {
             var user = new User();
-            int code = CodeHelper.GetRandomCode(7);
-            var emailRequest = new EmailRequest()
-            {
-                Body = $"{code}",
-                Subject = $"Ваш код верификации",
-                RecipientEmail = $"{request.Email}",        
-            };
-            await _emailService.SendEmailAsync(emailRequest, _config);
-            _memoryCache.Set(request.Email, code, DateTimeOffset.Now.AddMinutes(15));
             SetUserProperties(user, request.FullName, request.Email);
 
             await _userStore.SetUserNameAsync(user, request.Email, CancellationToken.None);

@@ -1,7 +1,6 @@
 
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using NoCap.Managers;
 using NoCap.Request;
 
 namespace NoCap.Controllers
@@ -12,12 +11,10 @@ namespace NoCap.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly AuthManager _authManager;
 
-        public AuthController(IMediator mediator, AuthManager authManager)
+        public AuthController(IMediator mediator)
         {
             _mediator = mediator;
-            _authManager = authManager;
         }
 
         [HttpPost("register")]
