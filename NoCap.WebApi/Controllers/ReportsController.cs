@@ -19,6 +19,7 @@ namespace NoCap.Controllers
             _mediator = mediator;
             _reportService = reportService;
         }
+
         [Authorize(Roles = "User,Admin")]
         [HttpPost("AddReport")]
         public async Task<IActionResult> AddReport([FromBody] AddReportRequest request)

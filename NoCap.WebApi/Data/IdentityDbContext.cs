@@ -27,7 +27,7 @@ public class IdentityContext : IdentityDbContext<User>
                                ?? throw new InvalidOperationException(
                                    "Connection string 'IdentityDbContextConnection' not found.");
 
-        optionsBuilder.UseNpgsql(connectionString);
+        optionsBuilder.UseSqlServer(connectionString);
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
