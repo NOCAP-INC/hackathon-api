@@ -75,11 +75,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseCors(builder => builder
-    .WithOrigins()
-    .AllowAnyHeader()
-    .AllowAnyMethod());
-
 app.Run();
 
 Config? BindConfiguration(IServiceProvider provider)
