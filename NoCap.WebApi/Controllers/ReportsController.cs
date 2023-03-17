@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NoCap.Managers;
 using NoCap.Request;
@@ -14,10 +15,13 @@ namespace NoCap.Controllers
     {
         private readonly ReportService _reportService;
         private readonly IMediator _mediator;
-        public ReportsController(ReportService reportService, IMediator mediator)
+        private readonly UserManager<User> _userManager;
+        
+        public ReportsController(ReportService reportService, IMediator mediator, UserManager<User> userManager)
         {
             _mediator = mediator;
             _reportService = reportService;
+            _userManager = userManager;
         }
 
         [Authorize(Roles = "User,Admin")]
@@ -38,17 +42,51 @@ namespace NoCap.Controllers
             var reports = await _reportService.GetAllReportsAsync();
             return Ok(reports);
         }
+
         [HttpPost("GetAllUserReports")]
         public async Task<ActionResult<List<UserReport>>> GetAllUserReports([FromBody] GetAllUserReportsRequest request)
         {
             var reports = await _reportService.GetAllUserReports(request.Email);
             return Ok(reports);
         }
-        //[HttpPost("DeleteReport")]
-        //public async Task<IActionResult> DeleteReport([FromBody] DeleteReportRequest request)
-        //{
+        
+        [Authorize(Roles = "User,Admin")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateReport(int id, [FromBody] UpdateReportRequest request)
+        {
+            var report = await _reportService.GetReportByIdAsync(id);
+            if (report == null)
+            {
+                return NotFound();
+            }
+          
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user == null || (user.Id != report.UserId && !await _userManager.IsInRoleAsync(user, "Admin")))
+            {
+                return Forbid();
+            }
+            report.Description = request.Description;
+            await _reportService.UpdateReportAsync(report);
+            return Ok();
+        }
 
-        //}
+        [Authorize(Roles = "User,Admin")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteReport(int id, [FromBody] DeleteReportRequest request)
+        {
+            var report = await _reportService.GetReportByIdAsync(id);
+            if (report == null)
+            {
+                return NotFound();
+            }
+            // Get user by email and check if it's the owner of the report or admin
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user == null || (user.Id != report.UserId && !await _userManager.IsInRoleAsync(user, "Admin")))
+            {
+                return Forbid();
+            }
+            await _reportService.DeleteReportAsync(id);
+            return Ok();
+        }
     }
-    
 }

@@ -60,8 +60,49 @@ namespace NoCap.Service
                 return userReports.Select(ur => ur.Report);
             }
             return null;
-            
+
         }
+        
+        public async Task UpdateReportAsync(Report report, string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null || report.UserId != user.Id)
+            {
+                throw new Exception("User not authorized to update this report.");
+            }
+
+            _dbContext.Reports.Update(report);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteReportAsync(int id, string email)
+        {
+            var report = await _dbContext.Reports.FindAsync(id);
+            if (report == null)
+            {
+                throw new Exception("Report not found.");
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null || report.UserId != user.Id)
+            {
+                throw new Exception("User not authorized to delete this report.");
+            }
+
+            _dbContext.Reports.Remove(report);
+            await _dbContext.SaveChangesAsync();
+        }
+        
+        public async Task<Report> GetReportByIdAsync(int id)
+        {
+            var report = await _dbContext.Reports.FindAsync(id);
+            if (report != null)
+            {
+                await _dbContext.Entry(report).Reference(r => r.User).LoadAsync();
+            }
+            return report;
+        }
+
     }
 }
 
