@@ -18,6 +18,7 @@ public class RegisterUserHandler : IRequestHandler<RegisterUserRequest, Register
     private readonly SignInManager<User> _signInManager;
     private readonly UserManager<User> _userManager;
     private readonly IUserStore<User> _userStore;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
     public RegisterUserHandler(
         UserManager<User> userManager,
@@ -26,8 +27,10 @@ public class RegisterUserHandler : IRequestHandler<RegisterUserRequest, Register
         EmailService emailService,
         ILogger<RegisterUserHandler> logger,
         Config config,
+        RoleManager<IdentityRole> roleManager,
         IMemoryCache memoryCache)
     {
+        _roleManager = roleManager;
         _userManager = userManager;
         _memoryCache = memoryCache;
         _userStore = userStore;
@@ -43,14 +46,14 @@ public class RegisterUserHandler : IRequestHandler<RegisterUserRequest, Register
     {
         var user = new User();
         SetUserProperties(user, request.FullName, request.Email);
-        user.Role = "User";
+        user.Role = "Admin";
         await _userStore.SetUserNameAsync(user, request.Email, CancellationToken.None);
         await _emailStore.SetEmailAsync(user, request.Email, CancellationToken.None);
         var result = await _userManager.CreateAsync(user, request.Password);
 
         if (result.Succeeded)
         {
-            await _userManager.AddToRoleAsync(user, "User");
+            await _userManager.AddToRoleAsync(user, "Admin");
             await _signInManager.SignInAsync(user, false);
             return new RegisterResult { Success = true };
         }

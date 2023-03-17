@@ -23,7 +23,6 @@ public class ReportsController : ControllerBase
         _userManager = userManager;
     }
 
-    [Authorize(Roles = "User,Admin")]
     [HttpPost("AddReport")]
     public async Task<IActionResult> AddReport([FromBody] AddReportRequest request)
     {

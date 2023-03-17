@@ -27,11 +27,8 @@ builder.Services.AddAuthorization();
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<IdentityContext>();
 
-using (var scope = builder.Services.BuildServiceProvider().CreateScope())
-{
-    var serviceProvider = scope.ServiceProvider;
-    Seed(serviceProvider);
-}
+var serviceprovider = builder.Services.BuildServiceProvider().CreateScope();
+Seed((IServiceProvider)serviceprovider);
 
 var mediatr = new ServiceCollection();
 builder.Services.AddMediatR(typeof(Program).Assembly);
@@ -56,8 +53,6 @@ builder.Services.AddSwaggerGen(options =>
             Url = new Uri("https://example.com/license")
         }
     });
-
-    // using System.Reflection;
 });
 
 var app = builder.Build();
@@ -89,20 +84,24 @@ app.Run();
 
 Config? BindConfiguration(IServiceProvider provider)
 {
-    var envName = builder.Environment.EnvironmentName;
-
     var config = new ConfigurationBuilder()
-        .AddJsonFile($"appsettings.{envName}.json")
+        .AddJsonFile($"appsettings.json")
         .Build();
 
     var configService = config.Get<Config>();
     return configService;
 }
 
-static async Task Seed(IServiceProvider serviceProvider)
+static async void Seed(IServiceProvider serviceProvider)
 {
     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    if (!await roleManager.RoleExistsAsync("Admin")) await roleManager.CreateAsync(new IdentityRole("Admin"));
-    if (!await roleManager.RoleExistsAsync("User")) await roleManager.CreateAsync(new IdentityRole("User"));
+    if (!await roleManager.RoleExistsAsync("Admin"))
+    {
+        await roleManager.CreateAsync(new IdentityRole("Admin"));
+    }
+    if (!await roleManager.RoleExistsAsync("User"))
+    {
+        await roleManager.CreateAsync(new IdentityRole("User"));
+    }
 }
