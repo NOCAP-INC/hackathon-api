@@ -1,8 +1,6 @@
-namespace NoCap.Configs
+namespace NoCap.Configs;
 
+public class Config
 {
-    public class Config
-    {
-        public SMTPConfig SMTPConfig { get; set; }
-    }
+    public SMTPConfig SMTPConfig { get; set; }
 }

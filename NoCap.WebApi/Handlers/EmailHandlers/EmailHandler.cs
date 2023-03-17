@@ -4,11 +4,10 @@ using NoCap.Service;
 
 namespace NoCap.Handlers;
 
-
 public class EmailHandler : IRequestHandler<SendEmailCommand, Unit>
 {
-    private readonly EmailService _emailService;
     private readonly SMTPConfig _config;
+    private readonly EmailService _emailService;
 
     public EmailHandler(EmailService emailService, Config config)
     {

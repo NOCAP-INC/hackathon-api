@@ -20,21 +20,12 @@ public class UpdateReportHandler : IRequestHandler<UpdateReportRequest, bool>
     public async Task<bool> Handle(UpdateReportRequest request, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByEmailAsync(request.Email);
-        if (user == null)
-        {
-            return false;
-        }
+        if (user == null) return false;
 
         var report = await _reportService.GetReportByIdAsync(request.Id);
-        if (report == null)
-        {
-            return false;
-        }
+        if (report == null) return false;
 
-        if (report.UserId != user.Id)
-        {
-            return false;
-        }
+        if (report.UserId != user.Id) return false;
 
         report.Title = request.Title;
         report.Description = request.Description;

@@ -1,11 +1,14 @@
-namespace NoCap.DException
+namespace NoCap.DException;
 
+public class DException : Exception
 {
-    public class DException : Exception
+    public DException()
     {
-        public DException() : base() { }
-        public DException(string msg) : base(msg) { }
-
-        public override string StackTrace => string.Empty;
     }
+
+    public DException(string msg) : base(msg)
+    {
+    }
+
+    public override string StackTrace => string.Empty;
 }

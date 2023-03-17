@@ -1,8 +1,6 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NoCap.Managers;
-using System.Reflection.Emit;
 
 namespace NoCap.Data;
 
@@ -11,10 +9,11 @@ public class IdentityContext : IdentityDbContext<User>
     public IdentityContext(DbContextOptions<IdentityContext> options)
         : base(options)
     {
-
     }
+
     public DbSet<Report> Reports { get; set; }
     public DbSet<UserReport> UserReports { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
@@ -29,12 +28,13 @@ public class IdentityContext : IdentityDbContext<User>
 
         optionsBuilder.UseSqlServer(connectionString);
     }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
         builder.Entity<UserReport>()
-        .HasKey(ur => new { ur.UserId, ur.ReportId });
+            .HasKey(ur => new { ur.UserId, ur.ReportId });
 
         builder.Entity<UserReport>()
             .HasOne(ur => ur.User)

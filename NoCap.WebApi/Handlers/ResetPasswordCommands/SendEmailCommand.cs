@@ -5,10 +5,10 @@ namespace NoCap.Handlers;
 
 public class SendEmailCommand : IRequest, IRequest<Unit>
 {
-    public EmailRequest EmailRequest { get; }
-
     public SendEmailCommand(EmailRequest emailRequest)
     {
         EmailRequest = emailRequest;
     }
+
+    public EmailRequest EmailRequest { get; }
 }

@@ -1,15 +1,11 @@
-using System.Configuration;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using NoCap.Configs;
 using NoCap.Data;
 using NoCap.Handlers;
 using NoCap.Managers;
 using NoCap.Service;
-
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMemoryCache();
@@ -29,7 +25,7 @@ builder.Services.AddMediatR(typeof(Program).Assembly);
 builder.Services.AddMediatR(typeof(EmailHandler).Assembly);
 builder.Services.AddAuthorization();
 builder.Services.AddIdentity<User, IdentityRole>()
-        .AddEntityFrameworkStores<IdentityContext>();
+    .AddEntityFrameworkStores<IdentityContext>();
 
 using (var scope = builder.Services.BuildServiceProvider().CreateScope())
 {
@@ -62,7 +58,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 
     // using System.Reflection;
-    
 });
 
 var app = builder.Build();
@@ -78,7 +73,8 @@ app.UseSwaggerUI(options =>
 });
 
 app.UseHttpsRedirection();
-app.UseAuthentication();;
+app.UseAuthentication();
+;
 
 app.UseAuthorization();
 
@@ -102,17 +98,11 @@ Config? BindConfiguration(IServiceProvider provider)
     var configService = config.Get<Config>();
     return configService;
 }
- static async Task Seed(IServiceProvider serviceProvider)
+
+static async Task Seed(IServiceProvider serviceProvider)
 {
     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    if (!await roleManager.RoleExistsAsync("Admin"))
-    {
-        await roleManager.CreateAsync(new IdentityRole("Admin"));
-    }
-    if (!await roleManager.RoleExistsAsync("User"))
-    {
-        await roleManager.CreateAsync(new IdentityRole("User"));
-    }
+    if (!await roleManager.RoleExistsAsync("Admin")) await roleManager.CreateAsync(new IdentityRole("Admin"));
+    if (!await roleManager.RoleExistsAsync("User")) await roleManager.CreateAsync(new IdentityRole("User"));
 }
-
